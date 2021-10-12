@@ -13,9 +13,12 @@ class IndexController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/IndexController.php',
+        $book = new Books();        
+        $form = $this->createForm(BooksType::class, $book);
+
+        return $this->render('index/index.html.twig', [
+            'form' => $form->createView()
         ]);
+
     }
 }
