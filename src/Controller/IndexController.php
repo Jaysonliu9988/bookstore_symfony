@@ -16,6 +16,12 @@ class IndexController extends AbstractController
         $book = new Books();        
         $form = $this->createForm(BooksType::class, $book);
 
+        $data=[];
+
+        if(isset($_GET['show'])){
+           $data = $this->getDoctrine()->getRepository(Books::class)->findAll();          
+        }
+
         return $this->render('index/index.html.twig', [
             'form' => $form->createView()
         ]);
