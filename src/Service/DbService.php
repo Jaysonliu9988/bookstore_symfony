@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Books;
+
+
 
 
 class DbService extends AbstractController{

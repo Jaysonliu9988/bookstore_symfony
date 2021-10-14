@@ -15,6 +15,8 @@ class BooksType extends AbstractType
             ->add('book_name')
             ->add('book_publisher')
             ->add('book_price')
+            ->add('save', ['label' => '<i class="fas fa-plus" aria-hidden="true"></i> Add','label_html'=>true])
+
         ;
     }
 
