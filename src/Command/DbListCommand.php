@@ -8,35 +8,45 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Service\DbService;
+
 
 class DbListCommand extends Command
 {
-    protected static $defaultName = 'DbListCommand';
-    protected static $defaultDescription = 'Add a short description for your command';
+    protected static $defaultName = 'db:list';
+    protected static $defaultDescription = 'Show datas';
+
+    private $DbService;
+
+    public function __construct(DbService $DbService){
+        $this->DbService=$DbService;
+        parent::__construct();
+    }
 
     protected function configure(): void
     {
-        $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+        
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        $res=$this->DbService->getdata();
+        $arr_header=['ID','Name', 'Publisher','Price'];
+        $arr_cols=[];
+        foreach ($res as $key => $value) {
+            
+            $tmp=[];
+            $tmp[]=$value->getId();//['id'];//['id'];
+            $tmp[]=$value->getBookName();//['book_name'];
+            $tmp[]=$value->getBookPublisher();//['book_publisher'];
+            $tmp[]=$value->getBookPrice();//['book_price'];
+            $arr_cols[]=$tmp;
         }
+        
+        $io->table($arr_header,$arr_cols);
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
-
+        
         return Command::SUCCESS;
     }
 }
